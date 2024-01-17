@@ -34,7 +34,7 @@ class EnquiryQuestionController extends Controller
         //dd($department);
         return Inertia::render('Department/Enquiry/Questions',[
             'department'=>$department,
-            'fields'=>Config::enquiryFormFields(),
+            'fields'=>Config::enquiryFormFields()
         ]);
     }
 

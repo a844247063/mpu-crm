@@ -23,8 +23,8 @@ class Enquiry extends Model
         return $this->hasMany(EnquiryQuestion::class)->with('responses')->with('media');
     }
 
-    // public static function token(){
-    //     return hash('crc32',time().'mpu-crm');
-    // }
+    public static function token(){
+        return hash('crc32',time().'mpu-crm');
+    }
 
 }

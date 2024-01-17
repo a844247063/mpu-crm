@@ -17,6 +17,8 @@ class EnquirySeeder extends Seeder
      */
     public function run()
     {
+        Enquiry::factory(50)->create();
+
         DB::table('enquiries')->insert([
             'department_id'=>1,
             'lang'=>'zh',

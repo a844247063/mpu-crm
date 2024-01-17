@@ -28,7 +28,7 @@
                     {{ dateFormat(record['created_at']) }}
                 </template>
                 <template v-else-if="column.dataIndex=='admin_user'">
-                    {{ record.last_response.admin_user?record.last_response.admin_user.name:'---' }}
+                    {{ record.last_response?(record.last_response.admin_user?record.last_response.admin_user.name:'error'):'---' }}
                 </template>
                 <!-- <template v-else-if="column.dataIndex=='escalated'">
                     {{ text==1?'Escalated':'--' }}
