@@ -27,10 +27,11 @@ class EnquiryQuestionController extends Controller
      */
     public function index()
     {
-        //$department=Department::find(session('currentDepartmentId'));
         $department=session('department');
-        //$this->authorize('view',$department);
+        
         $department->enquiryQuestionsOpen;
+        $department->refresh();
+        //dd($department);
         return Inertia::render('Department/Enquiry/Questions',[
             'department'=>$department,
             'fields'=>Config::enquiryFormFields(),
@@ -44,9 +45,6 @@ class EnquiryQuestionController extends Controller
      */
     public function create()
     {
-        $enquiryResponse=EnquiryResponse::find(17);
-        $enquiryResponse->media;
-        dd($enquiryResponse->media[0]->getPath());
     }
 
     /**
@@ -57,6 +55,8 @@ class EnquiryQuestionController extends Controller
      */
     public function store(Department $department, Request $request)
     {
+        EnquiryQuestion::create($request->all());
+        /*
         $enquiry=new Enquiry();
         $enquiry->department_id=$request->department_id;
         $enquiry->parent_id=$request->parent_id;
@@ -69,9 +69,10 @@ class EnquiryQuestionController extends Controller
         $enquiry->title=$request->title;
         $enquiry->content=$request->content;
         $enquiry->response=$request->response;
-        $enquiry->admin_user_id=auth()->user()->id;
+        $enquiry->admin_id=auth()->user()->id;
         $enquiry->token=hash('crc32',time().'1');
         $enquiry->save();
+        */
         return redirect()->back();
     }
 
@@ -133,6 +134,7 @@ class EnquiryQuestionController extends Controller
     }
     public function response(Department $department, Request $request){
         $enquiryResponse = EnquiryResponse::create($request->all());
+
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
                 $enquiryResponse->addMedia($file['originFileObj'])
