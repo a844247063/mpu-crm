@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Enquiry;
 use App\Models\EnquiryResponse;
 use Mail;
+use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
@@ -23,25 +24,26 @@ class StatisticsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function Statistics()
     {
-        // 获取所有询问
-        $enquiries = Enquiry::all(); 
-            dd($enquiries);
+        $enquiryAll = Enquiry::all();         
+  
+        $enquiriesWithHour = $enquiryAll->map(function ($enquiry) {      
+            $hour = Carbon::parse($enquiry->created_at)->format('H');
+            $enquiry->hour = $hour;
     
+            return $enquiry;
+        });
+        
     
         return Inertia::render('Statistics', [
-          
-            'enquiries' => $enquiries, 
+            'enquiriesWithHour' => $enquiriesWithHour,
+            'enquiryAll' => $enquiryAll, 
             'fields' => Config::enquiryFormFields(), 
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //
@@ -61,17 +63,7 @@ class StatisticsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Enquiry $enquiry)
-    {
-        $this->authorize('view',$enquiry->department);
-        //$enquiry=$enquiry->with('responses');
-        $enquiry->department;
-        $enquiry->questions;
-        return Inertia::render('Department/Enquiry/EnquiryShow',[
-            'fields'=>Config::enquiryFormFields(),
-            'enquiry'=>$enquiry,
-        ]);
-    }
+ 
 
 
    
