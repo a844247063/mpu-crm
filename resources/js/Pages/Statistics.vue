@@ -9,7 +9,7 @@
       <Bar
         id="chart2"
         :options="chartOptions"
-        :data="chartData"
+        :data="chartData2"
       />
     </div>
   </template>
@@ -44,7 +44,7 @@
   export default {
     name: 'BarCharts',
     components: { Bar },
-    props: ['enquiriesWithHour'], // Accepts the prop for the data to be visualized
+    props: ['enquiriesWithHour','enquiriesWithday'], // Accepts the prop for the data to be visualized
     setup(props) {
       // Ref to reactive chart data
       const chartData = ref({
@@ -52,6 +52,16 @@
         datasets: [
           {
             label: 'Enquiries per Hour',
+            backgroundColor: '#f87979', // Color of the bars
+            data: []
+          }
+        ]
+      })
+      const chartData2 = ref({
+        labels: [],
+        datasets: [
+          {
+            label: 'Enquiries per day',
             backgroundColor: '#f87979', // Color of the bars
             data: []
           }
@@ -77,13 +87,23 @@
         });
         chartData.value.labels = [...Array(24).keys()].map(hour => `${hour}:00`); // Create labels for each hour
         chartData.value.datasets[0].data = counts; // Assign the counts to the chart data
+      } 
+      const processEnquiries2 = () => {
+        const counts = new Array(31).fill(0); // Initialize counts for 24 hours
+        props.enquiriesWithHour.forEach(enquiry => {
+          const day = parseInt(enquiry.day, 10); // Parse the hour as an integer
+          counts[day]++; // Increment the count for the hour
+        });
+        chartData2.value.labels = [...Array(32).keys()].map(day => `${day}`); // Create labels for each hour
+        chartData2.value.datasets[0].data = counts; // Assign the counts to the chart data
       }
 
       // Process the data initially
       processEnquiries();
+      processEnquiries2();
 
       // Expose chartData and chartOptions to the template
-      return { chartData, chartOptions }
+      return { chartData,chartData2, chartOptions }
     }
   }
   </script>

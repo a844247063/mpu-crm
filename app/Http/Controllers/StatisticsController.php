@@ -22,9 +22,16 @@ class StatisticsController extends Controller
 
             return $enquiry;
         });
+        $enquiriesWithday = $enquiryAll->map(function ($enquiry) {
+            $day = Carbon::parse($enquiry->created_at)->format('d');
+            $enquiry->day = $day;
+
+            return $enquiry;
+        });
 
         return Inertia::render('Statistics', [
             'enquiriesWithHour' => $enquiriesWithHour,
+            'enquiriesWithday' => $enquiriesWithday,
             'enquiryAll' => $enquiryAll,
             'fields' => Config::enquiryFormFields(),
         ]);
