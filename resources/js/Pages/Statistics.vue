@@ -1,58 +1,30 @@
 <template>
-    <div>
-      <canvas id="myChart"></canvas>
-    </div>
-  </template>
-  
-  <script>
-  import Chart from 'chart.js/auto';
-  import axios from 'axios';
-  
-  export default {
-    name: 'EnquiriesChart',
-    data() {
-      return {
-        chart: null
-      };
-    },
-    mounted() {
-      this.fetchEnquiryCount();
-    },
-    methods: {
-      fetchEnquiryCount() {
-        axios.get('/api/enquiries/count') // Adjust the URL as needed for your API endpoint
-          .then((response) => {
-            const count = response.data;
-            const chartData = {
-              labels: ['Enquiries'],
-              datasets: [{
-                label: 'Number of Enquiries',
-                data: [count],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-              }]
-            };
-            this.createChart(chartData);
-          })
-          .catch((error) => {
-            console.error('Error fetching enquiry count:', error);
-          });
+  <Bar
+    id="my-chart-id"
+    :options="chartOptions"
+    :data="chartData"
+  />
+</template>
+
+<script>
+import { Bar } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
+export default {
+  name: 'BarChart',
+  components: { Bar },
+  data() {
+    return {
+      chartData: {
+        labels: [ 'January', 'February', 'March' ],
+        datasets: [ { data: [40, 20, 12] } ]
       },
-      createChart(chartData) {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        this.chart = new Chart(ctx, {
-          type: 'bar',
-          data: chartData,
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
+      chartOptions: {
+        responsive: true
       }
     }
   }
-  </script>
+}
+</script>

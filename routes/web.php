@@ -23,6 +23,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
+Route::get('/Statistics', function () {
+    return Inertia::render('Statistics');
+})->name('statistics');
 
 Route::prefix('enquiry')->group(function(){
     Route::resource('/',\App\Http\Controllers\EnquiryController::class)->names('enquiry');
