@@ -25,6 +25,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/Statistics',[\App\Http\Controllers\StatisticsController::class,'Statistics'])->name('statistics');
+Route::get('/Statistics_AntV',[\App\Http\Controllers\StatisticsController::class,'Statistics'])->name('statistics_AntV');
 
 Route::prefix('enquiry')->group(function(){
     Route::resource('/',\App\Http\Controllers\EnquiryController::class)->names('enquiry');
