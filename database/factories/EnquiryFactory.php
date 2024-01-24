@@ -27,6 +27,7 @@ class EnquiryFactory extends Factory
         $admission = ['EXAM', 'RECOMMEND', 'TELENT', 'DIRECT', 'OTHER'];
         $profile = ['STD', 'PAR', 'TEA', 'EDU'];
         $areacode = ['86', '853', '852', '886', '1', '44', '61', '91', '81', '49', '33', '55', '52'];
+        $has_question = ['0', '1'];
         
      
         return [
@@ -41,6 +42,7 @@ class EnquiryFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'areacode' =>$areacode[rand(0, count($areacode) -1)],
             'phone' => $this->faker->phoneNumber,
+            'has_question' =>$has_question[rand(0,1)],
         ];
     }
 }

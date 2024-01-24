@@ -27,11 +27,21 @@ class StatisticsController extends Controller
             $enquiry->day = $day;
 
             return $enquiry;
+        })
+        ;
+        $enquiriesWithQuestion = $enquiryAll->map(function ($enquiry) {
+            $has_question = $enquiry->has_question;
+            $enquiry->has_question = $has_question;
+        
+       
+            return $enquiry;
         });
+
 
         return Inertia::render('Statistics', [
             'enquiriesWithHour' => $enquiriesWithHour,
             'enquiriesWithday' => $enquiriesWithday,
+            'enquiriesWithQuestion' => $enquiriesWithQuestion,
             'enquiryAll' => $enquiryAll,
             'fields' => Config::enquiryFormFields(),
         ]);

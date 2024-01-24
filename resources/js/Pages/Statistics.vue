@@ -11,6 +11,11 @@
         :options="chartOptions"
         :data="chartData2"
       />
+      <Pie
+        id="chart3"
+        :options="chartOptionsPie"
+        :data="chartData3"
+      />
     </div>
   </template>
 
@@ -26,7 +31,7 @@
     min-width: 300px; /* Sets a minimum width for the charts, causing them to wrap if the container is too small */
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 400px) {
     .chart-container {
       flex-direction: column; /* Changes the layout to vertical when screen width is less than 600px */
     }
@@ -34,17 +39,17 @@
   </style>
 
   <script>
-  import { Bar } from 'vue-chartjs'
-  import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+  import { Bar, Pie } from 'vue-chartjs'
+  import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, } from 'chart.js'
   import { ref } from 'vue'
 
   // Registering the components necessary for Chart.js to function properly
-  ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+  ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale,)
 
   export default {
     name: 'BarCharts',
-    components: { Bar },
-    props: ['enquiriesWithHour','enquiriesWithday'], // Accepts the prop for the data to be visualized
+    components: { Bar, Pie },
+    props: ['enquiriesWithHour','enquiriesWithday','enquiriesWithQuestion'], // Accepts the prop for the data to be visualized
     setup(props) {
       // Ref to reactive chart data
       const chartData = ref({
@@ -67,6 +72,16 @@
           }
         ]
       })
+      const chartData3 = ref({
+        labels: [],
+        datasets: [
+          {
+            label: 'Enquiries per day',
+            backgroundColor: '#f87979', // Color of the bars
+            data: []
+          }
+        ]
+      })
 
       // Chart configuration options
       const chartOptions = {
@@ -75,6 +90,17 @@
           legend: {
             display: false // Hides the legend
           }
+        }
+      }
+      const chartOptionsPie = {
+
+        responsive: true, // Makes the chart responsive to window resizing
+        plugins: {
+          legend: {
+        
+            display:false,
+          },
+        
         }
       }
 
@@ -97,13 +123,24 @@
         chartData2.value.labels = [...Array(32).keys()].map(day => `${day}`); // Create labels for each hour
         chartData2.value.datasets[0].data = counts; // Assign the counts to the chart data
       }
+      
+      const processEnquiries3 = () => {
+  const counts = [0, 0]; // 初始化有两个元素的数组，用于计数
+  props.enquiriesWithQuestion.forEach(enquiry => {
+    const has_question = enquiry.has_question; // 解析问题是否存在为一个整数
+    counts[has_question]++; // 根据问题的有无增加计数
+  });
+  chartData3.value.labels = ['No', 'Yes']; // 创建标签
+  chartData3.value.datasets[0].data = counts; // 将计数赋值给饼图数据
+}
 
       // Process the data initially
       processEnquiries();
       processEnquiries2();
+      processEnquiries3();
 
       // Expose chartData and chartOptions to the template
-      return { chartData,chartData2, chartOptions }
+      return { chartData,chartData2,chartData3, chartOptions,chartOptionsPie }
     }
   }
   </script>

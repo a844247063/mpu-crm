@@ -19,12 +19,15 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
+     
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
 
 Route::get('/Statistics',[\App\Http\Controllers\StatisticsController::class,'Statistics'])->name('statistics');
+
+Route::get('/Hr',function(){return Inertia::render('Hr');});
 
 Route::prefix('enquiry')->group(function(){
     Route::resource('/',\App\Http\Controllers\EnquiryController::class)->names('enquiry');
