@@ -1068,9 +1068,14 @@ ALTER TABLE `password_resets`
 --
 -- Indexes for table `permissions`
 --
+-- ALTER TABLE `permissions`
+--   ADD PRIMARY KEY (`id`),
+--   ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
 ALTER TABLE `permissions`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
+  DROP INDEX `permissions_name_guard_name_unique`,
+  ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`(191), `guard_name`(191));
+
 
 --
 -- Indexes for table `personal_access_tokens`

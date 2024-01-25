@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::defaultStringLength(191);
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid')->unique();
+            $table->string('uuid',191)->unique();
             $table->text('connection');
             $table->text('queue');
             $table->longText('payload');

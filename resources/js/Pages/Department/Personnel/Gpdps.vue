@@ -18,10 +18,22 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
+
                             <a-popconfirm title="Confirm Delete" ok-text="Yes" cancel-text="No"
                                 @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
                                 <a-button :disabled="record.entries_count > 0">Delete</a-button>
                             </a-popconfirm>
+
+                            <a-popconfirm
+                title="Confirm Send Email"
+                ok-text="Yes"
+                cancel-text="No"
+                @confirm="SendEmailConfirmed(record)"
+                :disabled="record.entries_count > 0"
+              >
+                <a-button :disabled="record.entries_count > 0">Send Email</a-button>
+              </a-popconfirm>
+                            
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
@@ -233,6 +245,19 @@ export default {
                 },
             });
         },
+    SendEmailConfirmed(record) {
+    console.log("Send");
+    console.log(record);
+    this.$inertia.post(route("personnel.gpdp.listEmail", record.id ), {
+      onSuccess: (page) => {
+        console.log(page);
+      },             
+      onError: (error) => {
+        alert(error.message);
+      },
+    });
+    
+  },
     },
 };
 </script>

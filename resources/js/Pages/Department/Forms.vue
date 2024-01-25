@@ -42,6 +42,8 @@
               >
                 <a-button :disabled="record.entries_count > 0">Delete</a-button>
               </a-popconfirm>
+
+           
               <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
             </template>
             <template v-else-if="column.type == 'yesno'">
@@ -147,6 +149,7 @@ export default {
         },
       });
     },
+ 
     backupRecords(record) {
       if (!confirm("Do you sure want to backup?")) return;
       this.$inertia.post(route("manage.form.backup", record.id), {

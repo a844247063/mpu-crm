@@ -20,11 +20,11 @@ class DashboardController extends Controller
     {
         session()->forget('department');
         //dd(Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first());
-        session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
+       // session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
         //$defaultRoute=auth()->user()->roles->first()->default_route;
-        if(session('department')->default_route){
-            return redirect()->route(session('department')->default_route);
-        }
+        // if(session('department')->default_route){
+        //     return redirect()->route(session('department')->default_route);
+        // }
 
         return Inertia::render('Department/Dashboard',[
             'departments' => Department::all(),

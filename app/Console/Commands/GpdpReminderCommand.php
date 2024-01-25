@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Gpdp;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\GpdpReminderMail;
 
 class GpdpReminderCommand extends Command
 {
@@ -29,19 +30,18 @@ class GpdpReminderCommand extends Command
      */
     public function handle()
     {
+
         $gpdps=Gpdp::where('is_valid',true)->where('date_remind',date('Y-m-d'))->get()->toArray();
         foreach($gpdps as $gpdp){
-            Mail::send('emails.gpdpReminder',$gpdp, function($message) use($gpdp){
-                $message->to($gpdp['email'])
-<<<<<<< HEAD
-                        ->cc('personnel@mpu.edu.mo')
-                        ->from('personnel@mpu.edu.mo','Personnel Office')
-=======
-                        ->from('pes@mpu.edu.mo','Personnel Department')
->>>>>>> bc1bacfcc2fe0074f63d96920ebd33aef3ecad9a
-                        ->subject('GPDP remider');
-            });
+            Mail::to($gpdp->email)->send(new GpdpReminderMail($$gpdp->toArray()));
+
+        //     Mail::send('emails.gpdpReminder',$gpdp, function($message) use($gpdp){
+        //         $message->to($gpdp['email'])
+        //                 ->cc('personnel@mpu.edu.mo')
+        //                 ->from('personnel@mpu.edu.mo','Personnel Office')
+        //                 ->subject('GPDP remider');
+        //     });
         }
-        return Command::SUCCESS;
+        // return Command::SUCCESS;
     }
 }

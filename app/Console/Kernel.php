@@ -16,14 +16,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('gpdp:reminder')->everyMinute();
-<<<<<<< HEAD
+       // $schedule->command('gpdp:reminder')->everyMinute();
         //$schedule->command('gpdp:reminder')->daily();
         // $schedule->call(function(){
         //     info('called evey minute');
         // })->everyMinute();
-=======
->>>>>>> bc1bacfcc2fe0074f63d96920ebd33aef3ecad9a
     }
 
     /**

@@ -14,6 +14,7 @@ class CreatePermissionTables extends Migration
      */
     public function up()
     {
+        Schema::defaultStringLength(191);
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
         $teams = config('permission.teams');
@@ -24,7 +25,7 @@ class CreatePermissionTables extends Migration
         if ($teams && empty($columnNames['team_foreign_key'] ?? null)) {
             throw new \Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
         }
-
+   
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id'); // permission id
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
@@ -33,7 +34,7 @@ class CreatePermissionTables extends Migration
 
             $table->unique(['name', 'guard_name']);
         });
-
+  
         Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
             $table->bigIncrements('id'); // role id
             if ($teams || config('permission.testing')) { // permission.testing is a fix for sqlite testing
@@ -49,7 +50,7 @@ class CreatePermissionTables extends Migration
                 $table->unique(['name', 'guard_name']);
             }
         });
-
+      
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
 
@@ -126,6 +127,8 @@ class CreatePermissionTables extends Migration
      */
     public function down()
     {
+        Schema::defaultStringLength(191);
+
         $tableNames = config('permission.table_names');
 
         if (empty($tableNames)) {

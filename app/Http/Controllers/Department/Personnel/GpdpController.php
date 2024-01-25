@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Department\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Email;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Gpdp;
 use App\Models\Department;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\GpdpReminderMail;
 //use Mail;
 
 class GpdpController extends Controller
@@ -93,5 +95,38 @@ class GpdpController extends Controller
     {
         $gpdp->delete();
         return redirect()->back();
+    }
+
+    public function listEmail(Gpdp $gpdp){
+
+        // $gpdpEmail = Gpdp::create($request->all());
+        
+        //if($request->by_email){
+            $email=[
+                'address'=>$gpdp->email,
+                'subject'=>'test',
+                'name_zh'=>$gpdp->name_zh,
+                'name_fr'=>$gpdp->name_fr,
+                'date_remind'=>$gpdp->date_remind   
+            ];
+            // $this->sendEmail($email);
+            Mail::to($email['address'])->send(new GpdpReminderMail($email));
+
+        //}
+            
+        
+    }
+
+    public function sendEmail( $email ){
+        Mail::to($email['address'])->send(new GpdpReminderMail($email));
+
+        // Mail::send('emails.gpdpReminder',$email, function($message) use($email){
+        //     $message->to($email["address"])
+        //             ->subject($email["subject"]);
+          
+        // });
+ 
+            
+        
     }
 }

@@ -73,7 +73,7 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:DAMIA|admin|master'
+   
 ])->group(function () {
     Route::prefix('/registry')->group(function(){
         Route::get('/',[App\Http\Controllers\Department\Registry\DashboardController::class,'index'])->name('registry.dashboard');
@@ -87,10 +87,14 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:PES|admin|master'
+  
 ])->group(function () {
     Route::prefix('/personnel')->group(function(){
         Route::get('/',[App\Http\Controllers\Department\Personnel\DashboardController::class,'index'])->name('personnel.dashboard');
+        Route::get('/gpdps/export',[App\Http\Controllers\Department\Personnel\GpdpController::class,'export'])->name('personnel.gpdps.export');
+       // Route::get('/gpdps/emails',[App\Http\Controllers\Department\Personnel\GpdpController::class,'listEmails'])->name('personnel.gpdps.emails');
         Route::resource('/gpdps',App\Http\Controllers\Department\Personnel\GpdpController::class)->names('personnel.gpdps');
+        Route::post('/gpdp/{gpdp}/sendEmailReminder',[App\Http\Controllers\Department\Personnel\GpdpController::class,'sendEmailReminder'])->name('personnel.gpdp.sendEmailReminder');
+        Route::post('/gpdp/{gpdp}/list_email',[App\Http\Controllers\Department\Personnel\GpdpController::class,'listEmail'])->name('personnel.gpdp.listEmail');
     });
 });

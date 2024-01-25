@@ -16,7 +16,7 @@
           </inertia-link>
         </span>
       </a-menu-item>
-      <a-sub-menu key="enquiry" v-if="is('DAMIA | admin | master')">
+      <a-sub-menu key="enquiry">
         <template #icon>
           <MailOutlined />
         </template>
@@ -37,7 +37,7 @@
           </inertia-link>
         </a-menu-item>
       </a-sub-menu>
-      <a-menu-item key="personnel" v-if="is('PES | admin | master')">
+      <a-menu-item key="personnel">
         <template #icon>
           <InboxOutlined />
         </template>
