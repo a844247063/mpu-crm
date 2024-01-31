@@ -15,7 +15,8 @@ class Email extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-
+    protected $fillable=['emailable_id','emailable_type	','	admin_user_id','sender','receiver','cc','content','created_at','updated_at'];
+    
     public function emailable():MorphTo{
         return $this->morphTo();
     }

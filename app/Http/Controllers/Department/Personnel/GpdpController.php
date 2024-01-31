@@ -112,21 +112,30 @@ class GpdpController extends Controller
             // $this->sendEmail($email);
             Mail::to($email['address'])->send(new GpdpReminderMail($email));
 
-        //}
+     
             
         
     }
+    public function RecordEmails(Email $email,Gpdp $gpdp){
 
-    public function sendEmail( $email ){
-        Mail::to($email['address'])->send(new GpdpReminderMail($email));
 
-        // Mail::send('emails.gpdpReminder',$email, function($message) use($email){
-        //     $message->to($email["address"])
-        //             ->subject($email["subject"]);
+    
+    {
+        return Inertia::render('Department/Personnel/Gpdps',[
+            'department'=>session('department'),
+            'gpdps'=>Gpdp::all()
+        ]);
+    }}
+    // public function sendEmail( $email ){
+    //     Mail::to($email['address'])->send(new GpdpReminderMail($email));
+
+    //     // Mail::send('emails.gpdpReminder',$email, function($message) use($email){
+    //     //     $message->to($email["address"])
+    //     //             ->subject($email["subject"]);
           
-        // });
+    //     // });
  
             
         
-    }
+    // }
 }
